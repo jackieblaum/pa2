@@ -28,7 +28,8 @@ public class WGraph {
     }
 
     public ArrayList<Integer> V2V(int ux, int uy, int vx, int vy){
-
+        Vertex start = new Vertex(ux, uy);
+        Vertex end = new Vertex(vx, vy);
         return null;
     }
 
@@ -48,23 +49,23 @@ public class WGraph {
             queue = new ArrayList<Pair>();
         }
 
-        public void add(String s, int p){
-            Pair node = new Pair(s,p);
+        public void add(Vertex v, int p){
+            Pair node = new Pair(v,p);
             queue.add(node);
             //compare w parent, if smaller, switch, if bigger, stop
             int index = queue.size()-1;
-            while(queue.get(getParent(index)).getV() > node.getV()) {
+            while(queue.get(getParent(index)).priority() > node.priority()) {
                 swap(getParent(index),index);
                 index = getParent(index);
             }
         }
 
-        public String returnMin() throws HeapException{
+        public Vertex returnMin() throws HeapException{
             if(queue.size() == 0) throw new HeapException("Heap is Empty");
-            return queue.get(0).getS();
+            return queue.get(0).vertex();
         }
 
-        public String extractMin() throws HeapException{
+        public Vertex extractMin() throws HeapException{
             return extract(0);
         }
 
@@ -75,25 +76,8 @@ public class WGraph {
         public void decrementPriority(int i, int k) throws HeapException{
             if(queue.size() == 0) throw new HeapException("Heap is Empty");
             Pair pair = queue.remove(i);
-            pair.setV(pair.getV() - k);
-            add(pair.getS(), pair.getV());
-        }
-
-        public int[] priorityArray() throws HeapException{
-            if(queue.size() == 0) throw new HeapException("Heap is Empty");
-            int[] rval = new int[queue.size()];
-            for(int i = 0; i < queue.size(); i++){
-                rval[i] = queue.get(i).getV();
-            }
-            return rval;
-        }
-
-        public int getKey(int i){
-            return queue.get(i).getV();
-        }
-
-        public String getValue(int i){
-            return queue.get(i).getS();
+            pair.setPriority(pair.priority() - k);
+            add(pair.vertex(), pair.priority());
         }
 
         public boolean isEmpty(){
@@ -102,24 +86,17 @@ public class WGraph {
 
         //Key, priority pair used in the queue
         private class Pair{
-            private String s;
-            private int v;
+            private Vertex v;
+            private int p;
 
-            Pair(String s, int v){
-                this.s = s;
+            Pair(Vertex v, int p){
                 this.v = v;
+                this.p = p;
             }
 
-            int getV() {return v;}
-            String getS() {return s;}
-
-            void setV(int newV) {v = newV;}
-            void setS(String newS){s = newS;}
-
-            @Override
-            public String toString(){
-                return "(" + s + "," + v + ")";
-            }
+            Vertex vertex() {return v;}
+            int priority() {return p;}
+            void setPriority(int p){ this.p = p; }
         }
 
         //Returns index of parent
@@ -136,9 +113,9 @@ public class WGraph {
         }
 
         //Removes the element at index i and returns the string.
-        private String extract(int i) throws HeapException{
+        private Vertex extract(int i) throws HeapException{
             if(queue.size() == 0) throw new HeapException("Heap is Empty");
-            String rval = queue.get(i).getS();
+            Vertex rval = queue.get(i).vertex();
             swap(i, queue.size()-1);
             queue.remove(queue.size()-1);
             if(i == queue.size() || queue.size()==0) return rval;
@@ -153,11 +130,11 @@ public class WGraph {
             }
             else rChild = null;
 
-            int val = queue.get(i).getV();
+            int val = queue.get(i).priority();
             int index = i;
-            while( (lChild!=null && lChild.getV() < val)
-                    || (rChild!=null && rChild.getV() < val)){
-                if( (lChild!=null) && (rChild==null || lChild.getV() < rChild.getV()) ){
+            while( (lChild!=null && lChild.priority() < val)
+                    || (rChild!=null && rChild.priority() < val)){
+                if( (lChild!=null) && (rChild==null || lChild.priority() < rChild.priority()) ){
                     swap(getChild(index), index);
                     index = getChild(index);
                 }
