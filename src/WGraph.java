@@ -5,6 +5,7 @@ public class WGraph {
     public WGraph(String FName){}
 
     public ArrayList<Integer> V2V(int ux, int uy, int vx, int vy){
+
         return null;
     }
 
@@ -160,6 +161,31 @@ public class WGraph {
             }
         }
 
+        private class Vertex{
+            int x, y;
+            Vertex(int xcoord, int ycoord){
+                x = xcoord;
+                y = ycoord;
+            }
+            int x(){ return x; }
+            int y(){ return y; }
+
+            @Override
+            public boolean equals(Object obj) {
+                if(!(obj instanceof Vertex)) return false;
+                return (x == ((Vertex)obj).x) && (y == ((Vertex)obj).y);
+            }
+        }
+
+        private class Edge{
+            Vertex u, v;
+            Edge(Vertex source, Vertex dest){
+                u = source;
+                v = dest;
+            }
+            Vertex u(){ return u; }
+            Vertex v(){ return v; }
+        }
 
 
     }
