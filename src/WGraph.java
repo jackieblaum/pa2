@@ -160,34 +160,32 @@ public class WGraph {
                 super(message);
             }
         }
+    }
 
-        private class Vertex{
-            int x, y;
-            Vertex(int xcoord, int ycoord){
-                x = xcoord;
-                y = ycoord;
-            }
-            int x(){ return x; }
-            int y(){ return y; }
-
-            @Override
-            public boolean equals(Object obj) {
-                if(!(obj instanceof Vertex)) return false;
-                return (x == ((Vertex)obj).x) && (y == ((Vertex)obj).y);
-            }
+    private class Vertex{
+        int x, y;
+        Vertex(int xcoord, int ycoord){
+            x = xcoord;
+            y = ycoord;
         }
+        int x(){ return x; }
+        int y(){ return y; }
 
-        private class Edge{
-            Vertex u, v;
-            Edge(Vertex source, Vertex dest){
-                u = source;
-                v = dest;
-            }
-            Vertex u(){ return u; }
-            Vertex v(){ return v; }
+        @Override
+        public boolean equals(Object obj) {
+            if(!(obj instanceof Vertex)) return false;
+            return (x == ((Vertex)obj).x) && (y == ((Vertex)obj).y);
         }
+    }
 
-
+    private class Edge{
+        Vertex u, v;
+        Edge(Vertex source, Vertex dest){
+            u = source;
+            v = dest;
+        }
+        Vertex u(){ return u; }
+        Vertex v(){ return v; }
     }
 
 }
