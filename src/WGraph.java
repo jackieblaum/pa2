@@ -9,31 +9,29 @@ import java.util.Scanner;
 
 public class WGraph {
 
+    // Using a list of edges to represent the graph
+    private Edge edges[];
+
     public WGraph(String FName){
         File f = new File(FName);
-        LinkedList<Integer> arr[];
         try {
             Scanner s = new Scanner(f);
-            if (s.hasNextLine()) {
-                int numVertices = s.nextInt();
-                s.nextLine();
-                arr = new LinkedList[numVertices];
-                for(int i=0; i<numVertices; i++)
-                {
-                    arr[i] = new LinkedList<>();
-                }
-//                System.out.println(numVertices);
-            }
-            if (s.hasNextLine()) {
-                int numEdges = s.nextInt();
-                s.nextLine();
-                System.out.println(numEdges);
-            }
+            int numVertices = s.nextInt();
+            s.nextLine();
+//               System.out.println(numVertices);
+            int numEdges = s.nextInt();
+            edges = new Edge[numEdges];
+            s.nextLine();
+            System.out.println(numEdges);
+
+            int i = 0;
             while (s.hasNextLine()) {
                 Vertex src = new Vertex(s.nextInt(),s.nextInt());
                 Vertex dest = new Vertex(s.nextInt(),s.nextInt());
                 int wt = s.nextInt();
-                Edge e = new Edge(src,dest);
+                Edge e = new Edge(src,dest,wt);
+                edges[i] = e;
+                i++;
 //                System.out.println(src.x() + "," + src.y() + "," +
 //                        dest.x() + "," + dest.y() + "," + wt);
             }
