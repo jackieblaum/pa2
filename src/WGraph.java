@@ -1,21 +1,28 @@
 import groovy.ui.SystemOutputInterceptor;
 
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.io.File;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class WGraph {
 
     public WGraph(String FName){
         File f = new File(FName);
-
+        LinkedList<Integer> arr[];
         try {
             Scanner s = new Scanner(f);
             if (s.hasNextLine()) {
                 int numVertices = s.nextInt();
                 s.nextLine();
-                System.out.println(numVertices);
+                arr = new LinkedList[numVertices];
+                for(int i=0; i<numVertices; i++)
+                {
+                    arr[i] = new LinkedList<>();
+                }
+//                System.out.println(numVertices);
             }
             if (s.hasNextLine()) {
                 int numEdges = s.nextInt();
@@ -27,8 +34,8 @@ public class WGraph {
                 Vertex dest = new Vertex(s.nextInt(),s.nextInt());
                 int wt = s.nextInt();
                 Edge e = new Edge(src,dest);
-                System.out.println(src.x() + "," + src.y() + "," +
-                        dest.x() + "," + dest.y() + "," + wt);
+//                System.out.println(src.x() + "," + src.y() + "," +
+//                        dest.x() + "," + dest.y() + "," + wt);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -43,10 +50,12 @@ public class WGraph {
     }
 
     public ArrayList<Integer> V2S(int ux, int uy, ArrayList<Integer> S){
+        Vertex u = new Vertex(ux, uy);
         return null;
     }
 
     public ArrayList<Integer> S2S(ArrayList<Integer> S1, ArrayList<Integer> S2){
+
         return null;
     }
 
@@ -189,12 +198,15 @@ public class WGraph {
 
     private class Edge{
         Vertex u, v;
-        Edge(Vertex source, Vertex dest){
+        int wt;
+        Edge(Vertex source, Vertex dest, int weight){
             u = source;
             v = dest;
+            wt = weight;
         }
         Vertex u(){ return u; }
         Vertex v(){ return v; }
+        int wt() { return wt; }
     }
 
 }
