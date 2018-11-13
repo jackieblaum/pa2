@@ -78,8 +78,8 @@ public class WGraph {
                 ArrayList<Integer> rval = new ArrayList<>();
                 Vertex add = u;
                 while(add.parent != null){
-                    rval.add(0, u.y);
-                    rval.add(0, u.x);
+                    rval.add(0, add.y);
+                    rval.add(0, add.x);
                 }
                 return rval;
             }
@@ -94,9 +94,6 @@ public class WGraph {
                 }
             }
         }
-
-
-
         return null;
     }
 
@@ -106,8 +103,55 @@ public class WGraph {
     }
 
     public ArrayList<Integer> S2S(ArrayList<Integer> S1, ArrayList<Integer> S2){
+        int min_length = Integer.MAX_VALUE;
+        ArrayList<Integer> rval = null;
+        ArrayList<Vertex> starts = new ArrayList<>();
+        ArrayList<Vertex> ends = new ArrayList<>();
+        for(int i = 0; i < S1.size()-1; i+=2){
+            starts.add(new Vertex(S1.get(i), S1.get(i+1)));
+        }
+        for(int i = 0; i < S2.size()-1; i+=2){
+            ends.add(new Vertex(S2.get(i), S2.get(i+1)));
+        }
+        for(Vertex start : starts){
+            PriorityQ pq = new PriorityQ();
+            for(Vertex v : vertices){
+                v.dist = Integer.MAX_VALUE;
+                v.parent = null;
+                if(!v.equals(start)) {pq.add(v, v.dist);}
+            }
+            pq.add(start, 0);
+            start.dist = 0;
 
-        return null;
+            while(!pq.isEmpty()){
+                Vertex u = pq.extractMin();
+                for(Vertex end : ends){
+                    if(u.equals(end)){  //Found one!!
+                        ArrayList<Integer> path = new ArrayList<>();
+                        Vertex add = u;
+                        while(add.parent != null){
+                            path.add(0, add.y);
+                            path.add(0, add.x);
+                        }
+                        if(path.size()/2 < min_length){
+                            rval = path;
+                        }
+                    }
+                }
+                //end condition
+                for(Edge e : edges){
+                    if(e.u.equals(u)){
+                        int newdist = u.dist + e.wt;
+                        if(newdist < e.v.dist){
+                            e.v.dist = newdist;
+                            e.v.parent = u;
+                            pq.setPriority(e.v, newdist);
+                        }
+                    }
+                }
+            }
+        }
+        return rval;
     }
 
 
