@@ -45,11 +45,40 @@ public class WGraph {
     public ArrayList<Integer> V2V(int ux, int uy, int vx, int vy){
         Vertex start = new Vertex(ux, uy);
         Vertex end = new Vertex(vx, vy);
+        PriorityQ pq = new PriorityQ();
 
-        int dist[] = new int[numVertices];
-        for(int i=0; i<numVertices; i++){
-            dist[i] = Integer.MAX_VALUE;
+        for(Vertex v : vertices){
+            v.dist = Integer.MAX_VALUE;
+            v.parent = null;
+            if(!v.equals(start)) {pq.add(v, v.dist);}
         }
+        start.dist = 0;
+        pq.add(start, 0);
+
+        while(!pq.isEmpty()){
+            Vertex u = pq.extractMin();
+            if(u.equals(end)){ //Found it!!
+                ArrayList<Integer> rval = new ArrayList<>();
+                Vertex add = u;
+                while(add.parent != null){
+                    rval.add(0, u.y);
+                    rval.add(0, u.x);
+                }
+                return rval;
+            }
+            for(Edge e : edges){
+                if(e.u.equals(u)){
+                    int newdist = u.dist + e.wt;
+                    if(newdist < e.v.dist){
+                        e.v.dist = newdist;
+                        e.v.parent = u;
+                        pq.setPriority(e.v, newdist);
+                    }
+                }
+            }
+        }
+
+
 
         return null;
     }
@@ -96,10 +125,15 @@ public class WGraph {
             extract(i);
         }
 
-        public void decrementPriority(int i, int k) throws HeapException{
+        public void setPriority(Vertex v, int k) throws HeapException{
             if(queue.size() == 0) throw new HeapException("Heap is Empty");
-            Pair pair = queue.remove(i);
-            pair.setPriority(pair.priority() - k);
+            int index = -1;
+            for(int i = 0; i < queue.size(); i++){
+                if(queue.get(i).vertex().equals(v)) index = i;
+            }
+            if(index == < 0) throw new HeapException("Vertex not in queue.");
+            Pair pair = queue.remove(index);
+            pair.setPriority(k);
             add(pair.vertex(), pair.priority());
         }
 
@@ -187,12 +221,15 @@ public class WGraph {
 
     private class Vertex{
         int x, y;
+        Vertex parent = null;
+        int dist = Integer.MAX_VALUE;
         Vertex(int xcoord, int ycoord){
             x = xcoord;
             y = ycoord;
         }
         int x(){ return x; }
         int y(){ return y; }
+
 
         @Override
         public boolean equals(Object obj) {
