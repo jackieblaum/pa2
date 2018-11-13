@@ -1,3 +1,5 @@
+import groovy.ui.SystemOutputInterceptor;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.io.File;
@@ -13,16 +15,20 @@ public class WGraph {
             if (s.hasNextLine()) {
                 int numVertices = s.nextInt();
                 s.nextLine();
+                System.out.println(numVertices);
             }
             if (s.hasNextLine()) {
                 int numEdges = s.nextInt();
                 s.nextLine();
+                System.out.println(numEdges);
             }
             while (s.hasNextLine()) {
                 Vertex src = new Vertex(s.nextInt(),s.nextInt());
                 Vertex dest = new Vertex(s.nextInt(),s.nextInt());
                 int wt = s.nextInt();
                 Edge e = new Edge(src,dest);
+                System.out.println(src.x() + "," + src.y() + "," +
+                        dest.x() + "," + dest.y() + "," + wt);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
