@@ -60,46 +60,20 @@ public class WGraph {
     }
 
     public ArrayList<Integer> V2V(int ux, int uy, int vx, int vy){
-        Vertex start = new Vertex(ux, uy);
-        Vertex end = new Vertex(vx, vy);
-        PriorityQ pq = new PriorityQ();
-
-        for(Vertex v : vertices){
-            v.dist = Integer.MAX_VALUE;
-            v.parent = null;
-            if(!v.equals(start)) {pq.add(v, v.dist);}
-        }
-        start.dist = 0;
-        pq.add(start, 0);
-
-        while(!pq.isEmpty()){
-            Vertex u = pq.extractMin();
-            if(u.equals(end)){ //Found it!!
-                ArrayList<Integer> rval = new ArrayList<>();
-                Vertex add = u;
-                while(add.parent != null){
-                    rval.add(0, add.y);
-                    rval.add(0, add.x);
-                }
-                return rval;
-            }
-            for(Edge e : edges){
-                if(e.u.equals(u)){
-                    int newdist = u.dist + e.wt;
-                    if(newdist < e.v.dist){
-                        e.v.dist = newdist;
-                        e.v.parent = u;
-                        pq.setPriority(e.v, newdist);
-                    }
-                }
-            }
-        }
-        return null;
+        ArrayList<Integer> starts = new ArrayList<>();
+        ArrayList<Integer> ends = new ArrayList<>();
+        starts.add(ux);
+        starts.add(uy);
+        ends.add(vx);
+        ends.add(vy);
+        return S2S(starts, ends);
     }
 
     public ArrayList<Integer> V2S(int ux, int uy, ArrayList<Integer> S){
-        Vertex u = new Vertex(ux, uy);
-        return null;
+        ArrayList<Integer> starts = new ArrayList<>();
+        starts.add(ux);
+        starts.add(uy);
+        return S2S(starts, S);
     }
 
     public ArrayList<Integer> S2S(ArrayList<Integer> S1, ArrayList<Integer> S2){
