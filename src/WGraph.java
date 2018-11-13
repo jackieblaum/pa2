@@ -105,31 +105,38 @@ public class WGraph {
             while(!pq.isEmpty()){
                 Vertex u = pq.extractMin();
                 u.done = true;
-                System.out.println(u + " " + u.done);
-                for(Vertex v : vertices){
-                    System.out.print(((Object)v.toString()) + " " + v.done + ", ");
-                }
-                System.out.println();
-                System.out.println("You're doing great! I just extracted " + u);
                 for(Vertex end : ends){
                     if(u.equals(end)){  //Found one!!
                         ArrayList<Integer> path = new ArrayList<>();
                         Vertex add = u;
+                        ArrayList<Edge> edge_path = new ArrayList<>();
                         while(add != null){
                             path.add(0, add.y);
                             path.add(0, add.x);
                             add = add.parent;
-                            System.out.println("Awesome, I just added " + add + " to the path.");
+                            if(add != null && add.parent != null) {
+                                System.out.println(add.parent + " " + add);
+                                edge_path.add(new Edge(add.parent, add, 0));
+                            }
                         }
-                        if(path.size()/2 < min_length){
+                        //Calculate path cost
+                        int path_cost = 0;
+                        for(Edge e : edge_path){
+                            for(Edge e2 : edges){
+                                if(e.u.equals(e2.u) && e.v.equals(e2.v)){
+                                    path_cost += e2.wt();
+                                }
+                            }
+                        }
+                        if(path_cost < min_length){
                             rval = path;
+                            min_length = path_cost;
                         }
                     }
                 }
                 for(Edge e : edges){
                     if(e.u.equals(u) && !e.v.done){
                         int newdist = u.dist + e.wt;
-                        System.out.println("Good job, you can do it: " + e + " " + newdist + ", " + ((Object)e.v).toString());
                         if(newdist < e.v.dist){
                             e.v.dist = newdist;
                             e.v.parent = u;
