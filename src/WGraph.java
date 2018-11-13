@@ -20,38 +20,38 @@ public class WGraph {
             Scanner s = new Scanner(f);
             numVertices = s.nextInt();
             vertices = new Vertex[numVertices];
-            s.nextLine();
-//               System.out.println(numVertices);
             numEdges = s.nextInt();
             edges = new Edge[numEdges];
-            s.nextLine();
-            System.out.println(numEdges);
 
             int edge_index = 0;
             int vertex_index = 0;
-            while (s.hasNextLine()) {
+            while (edge_index < numEdges) {
                 Vertex src = new Vertex(s.nextInt(),s.nextInt());
                 Vertex dest = new Vertex(s.nextInt(),s.nextInt());
                 boolean src_checked = false;
                 boolean dest_checked = false;
-                for(Vertex v : vertices) {
-                    if (v.equals(src)) { src_checked = true; }
-                    if (v.equals(dest)) { dest_checked = true; }
+                for (Vertex v : vertices) {
+                    if(v != null) {
+                        if (v.equals(src)) {
+                            src_checked = true;
+                        }
+                        if (v.equals(dest)) {
+                            dest_checked = true;
+                        }
+                    }
                 }
                 if (!src_checked) {
                     vertices[vertex_index] = src;
                     vertex_index++;
                 }
                 if (!dest_checked) {
-                    vertices[vertex_index] = src;
+                    vertices[vertex_index] = dest;
                     vertex_index++;
                 }
                 int wt = s.nextInt();
                 Edge e = new Edge(src,dest,wt);
                 edges[edge_index] = e;
                 edge_index++;
-//                System.out.println(src.x() + "," + src.y() + "," +
-//                        dest.x() + "," + dest.y() + "," + wt);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -92,13 +92,23 @@ public class WGraph {
             for(Vertex v : vertices){
                 v.dist = Integer.MAX_VALUE;
                 v.parent = null;
+                v.done = false;
                 if(!v.equals(start)) {pq.add(v, v.dist);}
+                else {
+                    v.dist = 0;
+                    pq.add(v, v.dist);
+                }
             }
-            pq.add(start, 0);
-            start.dist = 0;
 
             while(!pq.isEmpty()){
                 Vertex u = pq.extractMin();
+                u.done = true;
+                System.out.println(u + " " + u.done);
+                for(Vertex v : vertices){
+                    System.out.print(v + " " + v.done + ", ");
+                }
+                System.out.println();
+                System.out.println("You're doing great! I just extracted " + u);
                 for(Vertex end : ends){
                     if(u.equals(end)){  //Found one!!
                         ArrayList<Integer> path = new ArrayList<>();
@@ -112,10 +122,10 @@ public class WGraph {
                         }
                     }
                 }
-                //end condition
                 for(Edge e : edges){
-                    if(e.u.equals(u)){
+                    if(e.u.equals(u) && !e.v.done){
                         int newdist = u.dist + e.wt;
+                        System.out.println("Good job, you can do it: " + e + " " + newdist + ", " + e.v.done);
                         if(newdist < e.v.dist){
                             e.v.dist = newdist;
                             e.v.parent = u;
@@ -166,7 +176,7 @@ public class WGraph {
             for(int i = 0; i < queue.size(); i++){
                 if(queue.get(i).vertex().equals(v)) index = i;
             }
-            if(index <= 0) throw new HeapException("Vertex not in queue.");
+            if(index < 0) throw new HeapException("Vertex not in queue.");
             Pair pair = queue.remove(index);
             pair.setPriority(k);
             add(pair.vertex(), pair.priority());
@@ -258,6 +268,7 @@ public class WGraph {
         int x, y;
         Vertex parent = null;
         int dist = Integer.MAX_VALUE;
+        boolean done = false;
         Vertex(int xcoord, int ycoord){
             x = xcoord;
             y = ycoord;
@@ -270,6 +281,11 @@ public class WGraph {
         public boolean equals(Object obj) {
             if(!(obj instanceof Vertex)) return false;
             return (x == ((Vertex)obj).x) && (y == ((Vertex)obj).y);
+        }
+
+        @Override
+        public String toString(){
+            return "(" + x + "," + y + ")";
         }
     }
 
@@ -284,6 +300,10 @@ public class WGraph {
         Vertex u(){ return u; }
         Vertex v(){ return v; }
         int wt() { return wt; }
+        @Override
+        public String toString(){
+            return "[" + u + "->" + wt + "->" + v + "]";
+        }
     }
 
 }
