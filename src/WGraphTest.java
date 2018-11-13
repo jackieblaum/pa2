@@ -58,8 +58,8 @@ public class WGraphTest {
     }
 
     @Test
-    public void s2Sexample() {
-        WGraph graph = new WGraph("C:\\Users\\Jackie\\Documents\\CS311\\pa2\\src\\example.txt");
+    public void s2Sex1() {
+        WGraph graph = new WGraph("C:\\Users\\Jackie\\Documents\\CS311\\pa2\\src\\ex1.txt");
         ArrayList<Integer> result = new ArrayList<>();
         Collections.addAll(result, 2,1,3,3,4,3,5,2);
         ArrayList<Integer> s1 = new ArrayList<>();
