@@ -148,7 +148,7 @@ public class WGraph {
             for(int i = 0; i < queue.size(); i++){
                 if(queue.get(i).vertex().equals(v)) index = i;
             }
-            if(index == < 0) throw new HeapException("Vertex not in queue.");
+            if(index <= 0) throw new HeapException("Vertex not in queue.");
             Pair pair = queue.remove(index);
             pair.setPriority(k);
             add(pair.vertex(), pair.priority());
