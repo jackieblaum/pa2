@@ -34,9 +34,11 @@ public class WGraph {
                     if(v != null) {
                         if (v.equals(src)) {
                             src_checked = true;
+                            src = v;
                         }
                         if (v.equals(dest)) {
                             dest_checked = true;
+                            dest = v;
                         }
                     }
                 }
@@ -105,7 +107,7 @@ public class WGraph {
                 u.done = true;
                 System.out.println(u + " " + u.done);
                 for(Vertex v : vertices){
-                    System.out.print(v + " " + v.done + ", ");
+                    System.out.print(((Object)v.toString()) + " " + v.done + ", ");
                 }
                 System.out.println();
                 System.out.println("You're doing great! I just extracted " + u);
@@ -113,9 +115,11 @@ public class WGraph {
                     if(u.equals(end)){  //Found one!!
                         ArrayList<Integer> path = new ArrayList<>();
                         Vertex add = u;
-                        while(add.parent != null){
+                        while(add != null){
                             path.add(0, add.y);
                             path.add(0, add.x);
+                            add = add.parent;
+                            System.out.println("Awesome, I just added " + add + " to the path.");
                         }
                         if(path.size()/2 < min_length){
                             rval = path;
@@ -125,7 +129,7 @@ public class WGraph {
                 for(Edge e : edges){
                     if(e.u.equals(u) && !e.v.done){
                         int newdist = u.dist + e.wt;
-                        System.out.println("Good job, you can do it: " + e + " " + newdist + ", " + e.v.done);
+                        System.out.println("Good job, you can do it: " + e + " " + newdist + ", " + ((Object)e.v).toString());
                         if(newdist < e.v.dist){
                             e.v.dist = newdist;
                             e.v.parent = u;
