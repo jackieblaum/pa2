@@ -11,15 +11,16 @@ public class WGraph {
 
     // Using a list of edges to represent the graph
     private Edge edges[];
+    private int numVertices, numEdges;
 
     public WGraph(String FName){
         File f = new File(FName);
         try {
             Scanner s = new Scanner(f);
-            int numVertices = s.nextInt();
+            numVertices = s.nextInt();
             s.nextLine();
 //               System.out.println(numVertices);
-            int numEdges = s.nextInt();
+            numEdges = s.nextInt();
             edges = new Edge[numEdges];
             s.nextLine();
             System.out.println(numEdges);
@@ -44,6 +45,12 @@ public class WGraph {
     public ArrayList<Integer> V2V(int ux, int uy, int vx, int vy){
         Vertex start = new Vertex(ux, uy);
         Vertex end = new Vertex(vx, vy);
+
+        int dist[] = new int[numVertices];
+        for(int i=0; i<numVertices; i++){
+            dist[i] = Integer.MAX_VALUE;
+        }
+
         return null;
     }
 
