@@ -19,7 +19,10 @@ public class WGraph {
                 s.nextLine();
             }
             while (s.hasNextLine()) {
-
+                Vertex src = new Vertex(s.nextInt(),s.nextInt());
+                Vertex dest = new Vertex(s.nextInt(),s.nextInt());
+                int wt = s.nextInt();
+                Edge e = new Edge(src,dest);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
