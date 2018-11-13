@@ -11,6 +11,7 @@ public class WGraph {
 
     // Using a list of edges to represent the graph
     private Edge edges[];
+    private Vertex vertices[];
     private int numVertices, numEdges;
 
     public WGraph(String FName){
@@ -18,6 +19,7 @@ public class WGraph {
         try {
             Scanner s = new Scanner(f);
             numVertices = s.nextInt();
+            vertices = new Vertex[numVertices];
             s.nextLine();
 //               System.out.println(numVertices);
             numEdges = s.nextInt();
@@ -25,14 +27,29 @@ public class WGraph {
             s.nextLine();
             System.out.println(numEdges);
 
-            int i = 0;
+            int edge_index = 0;
+            int vertex_index = 0;
             while (s.hasNextLine()) {
                 Vertex src = new Vertex(s.nextInt(),s.nextInt());
                 Vertex dest = new Vertex(s.nextInt(),s.nextInt());
+                boolean src_checked = false;
+                boolean dest_checked = false;
+                for(Vertex v : vertices) {
+                    if (v.equals(src)) { src_checked = true; }
+                    if (v.equals(dest)) { dest_checked = true; }
+                }
+                if (!src_checked) {
+                    vertices[vertex_index] = src;
+                    vertex_index++;
+                }
+                if (!dest_checked) {
+                    vertices[vertex_index] = src;
+                    vertex_index++;
+                }
                 int wt = s.nextInt();
                 Edge e = new Edge(src,dest,wt);
-                edges[i] = e;
-                i++;
+                edges[edge_index] = e;
+                edge_index++;
 //                System.out.println(src.x() + "," + src.y() + "," +
 //                        dest.x() + "," + dest.y() + "," + wt);
             }
