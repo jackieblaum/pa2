@@ -3,8 +3,6 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-
-
 public class ImageProcessor {
     private int H,W;
     private Pixel M[][];
@@ -16,14 +14,17 @@ public class ImageProcessor {
             H = s.nextInt();
             W = s.nextInt();
 
+            M = new Pixel[H][W];
+            for (int i=0; i<H; i++) {
+                for (int j=0; j<W; j++) {
+                    M[i][j] = new Pixel(s.nextInt(),s.nextInt(),s.nextInt());
+                }
+            }
+            reduce_by_one();
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-
-        int H = 0;
-        int W = 0;
-        M = new Pixel[H][W];
     }
 
     ArrayList<ArrayList<Integer>> getImportance() {
@@ -42,8 +43,19 @@ public class ImageProcessor {
 
     }
 
-    private void reduce_one(){
+    private void reduce_by_one(){
         ArrayList<ArrayList<Integer>> imp = getImportance();
+        WGraph wg = new WGraph(imp);
+        ArrayList<Integer> starts = new ArrayList<>();
+        ArrayList<Integer> ends = new ArrayList<>();
+        for(int j = 0; j < W; j++){
+            starts.add(0);
+            starts.add(j);
+            ends.add(H-1);
+            ends.add(j);
+        }
+        ArrayList<Integer> path = wg.S2S(starts, ends);
+        System.out.println(path);
     }
 
     private int Importance(int i, int j){
@@ -53,6 +65,8 @@ public class ImageProcessor {
         iup = i == H-1 ? 0 : i+1;
         jlow = j == 0 ? W-1 : j-1;
         jup = j == W-1 ? 0 : j+1;
+        System.out.println("jlow, j: " + jlow + ", " + j);
+        System.out.println("ilow, i: " + ilow + ", " + i);
         yimp = PDist(M[ilow][j], M[iup][j]);
         ximp = PDist(M[i][jlow], M[i][jup]);
         return ximp + yimp;
@@ -82,5 +96,5 @@ public class ImageProcessor {
                     && (((Pixel)obj).B == B);
         }
    }
-    }
+
 }
