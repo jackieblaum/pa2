@@ -13,6 +13,7 @@ public class WGraph {
     private Edge edges[];
     private Vertex vertices[];
     private int numVertices, numEdges;
+    private ArrayList<ArrayList<Integer>> Importance;
 
     public WGraph(String FName){
         File f = new File(FName);
@@ -60,6 +61,49 @@ public class WGraph {
         }
 
     }
+
+    public WGraph(ArrayList<ArrayList<Integer>> matrix) {
+        Importance = matrix;
+        int W = matrix.get(0).size();
+        int H = matrix.size();
+        numVertices = H*W;
+        numEdges = (H-1)*(3*(W-2)+4);
+        vertices = new Vertex[numVertices];
+        edges = new Edge[numEdges];
+
+        int edge_index = 0;
+        for(int j = 0; j < W; j++){
+            makeEdges(H, W, edge_index, 0, j);
+        }
+
+
+    }
+
+    private void makeEdges(int H, int W, int edgeIndex, int i, int j){
+        vertices[W*i + j] = new Vertex(i, j);
+        if(i == H-1) return;
+        if(j != 0){
+            if( vertices[W*(i+1) + j-1] != null ){
+                makeEdges(H, W, edgeIndex,i+1, j-1);
+            }
+            edges[edgeIndex] = new Edge(vertices[W*i + j], vertices[W*(i+1) + j-1], Importance.get(i+1).get(j-1));
+            edgeIndex++;
+        }
+        if( vertices[W*(i+1) + j] != null ){
+            makeEdges(H, W, edgeIndex, i+1, j);
+        }
+        edges[edgeIndex] = new Edge(vertices[W*i + j], vertices[W*(i+1) + j], Importance.get(i+1).get(j));
+        edgeIndex++;
+        if(j != W-1){
+            if( vertices[W*(i+1) + j+1] != null){
+                makeEdges(H, W, edgeIndex, i+1, j+1);
+            }
+            edges[edgeIndex] = new Edge(vertices[W*i + j], vertices[W*(i+1) + j+1], Importance.get(i+1).get(j+1));
+            edgeIndex++;
+        }
+
+    }
+
 
     public ArrayList<Integer> V2V(int ux, int uy, int vx, int vy){
         ArrayList<Integer> starts = new ArrayList<>();
