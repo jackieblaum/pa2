@@ -20,8 +20,6 @@ public class ImageProcessor {
                     M[i][j] = new Pixel(s.nextInt(),s.nextInt(),s.nextInt());
                 }
             }
-            reduce_by_one();
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -43,7 +41,8 @@ public class ImageProcessor {
 
     }
 
-    private void reduce_by_one(){
+    // change back to private when done testing
+    public void reduce_by_one(){
         ArrayList<ArrayList<Integer>> imp = getImportance();
         WGraph wg = new WGraph(imp);
         ArrayList<Integer> starts = new ArrayList<>();
@@ -65,8 +64,6 @@ public class ImageProcessor {
         iup = i == H-1 ? 0 : i+1;
         jlow = j == 0 ? W-1 : j-1;
         jup = j == W-1 ? 0 : j+1;
-        System.out.println("jlow, j: " + jlow + ", " + j);
-        System.out.println("ilow, i: " + ilow + ", " + i);
         yimp = PDist(M[ilow][j], M[iup][j]);
         ximp = PDist(M[i][jlow], M[i][jup]);
         return ximp + yimp;

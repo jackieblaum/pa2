@@ -78,6 +78,11 @@ public class WGraph {
         for (Vertex v: vertices) {
             System.out.print(v + ", ");
         }
+        System.out.println();
+        for (Edge e: edges) {
+            System.out.print(e + ", ");
+        }
+        System.out.println();
     }
 
     private void makeEdges(int H, int W, int edgeIndex, int i, int j){
@@ -140,7 +145,6 @@ public class WGraph {
         for(Vertex start : starts){
             PriorityQ pq = new PriorityQ();
             for(Vertex v : vertices){
-                System.out.println(v);
                 v.dist = Integer.MAX_VALUE;
                 v.parent = null;
                 v.done = false;
