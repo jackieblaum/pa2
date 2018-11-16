@@ -81,26 +81,33 @@ public class WGraph {
     private int makeEdges(int H, int W, int edgeIndex, int i, int j){
         vertices[W*i + j] = new Vertex(i, j);
         if(i == H-1) return edgeIndex;
+        int weight;
         if(j != 0){
             if (vertices[W*(i+1) + j-1] == null) {
                 vertices[W * (i + 1) + j - 1] = new Vertex(i + 1, j - 1);
                 edgeIndex = makeEdges(H, W, edgeIndex,i+1, j-1);
             }
-            edges[edgeIndex] = new Edge(vertices[W*i + j], vertices[W*(i+1) + j-1], Importance.get(i+1).get(j-1));
+            weight = Importance.get(i+1).get(j-1);
+            if(i == 0) weight += Importance.get(i).get(j);
+            edges[edgeIndex] = new Edge(vertices[W*i + j], vertices[W*(i+1) + j-1], weight);
             edgeIndex++;
         }
         if(vertices[W*(i+1) + j]==null) {
             vertices[W*(i+1) + j] = new Vertex(i+1,j);
             edgeIndex = makeEdges(H, W, edgeIndex, i+1, j);
         }
-        edges[edgeIndex] = new Edge(vertices[W*i + j], vertices[W*(i+1) + j], Importance.get(i+1).get(j));
+        weight = Importance.get(i+1).get(j);
+        if(i == 0) weight += Importance.get(i).get(j);
+        edges[edgeIndex] = new Edge(vertices[W*i + j], vertices[W*(i+1) + j], weight);
         edgeIndex++;
         if(j != W-1){
             if(vertices[W*(i+1) + j+1]==null) {
                 vertices[W*(i+1) + j+1] = new Vertex(i+1,j+1);
                 edgeIndex = makeEdges(H, W, edgeIndex, i+1, j+1);
             }
-            edges[edgeIndex] = new Edge(vertices[W*i + j], vertices[W*(i+1) + j+1], Importance.get(i+1).get(j+1));
+            weight = Importance.get(i+1).get(j+1);
+            if(i == 0) weight += Importance.get(i).get(j);
+            edges[edgeIndex] = new Edge(vertices[W*i + j], vertices[W*(i+1) + j+1], weight);
             edgeIndex++;
         }
         return edgeIndex;
