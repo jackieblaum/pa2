@@ -74,20 +74,11 @@ public class WGraph {
 
         int edge_index = 0;
         for(int j = 0; j < W; j++){
-            makeEdges(H, W, edge_index, 0, j);
+            edge_index = makeEdges(H, W, edge_index, 0, j);
         }
-        for (Vertex v: vertices) {
-            System.out.print(v + ", ");
-        }
-        System.out.println();
-        for (Edge e: edges) {
-            System.out.print(e + ", ");
-        }
-        System.out.println();
     }
 
     private int makeEdges(int H, int W, int edgeIndex, int i, int j){
-        System.out.println("(" + i + "," + j + ") " + Arrays.toString(edges));
         vertices[W*i + j] = new Vertex(i, j);
         if(i == H-1) return edgeIndex;
         if(j != 0){
