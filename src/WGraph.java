@@ -75,29 +75,33 @@ public class WGraph {
         for(int j = 0; j < W; j++){
             makeEdges(H, W, edge_index, 0, j);
         }
-
-
+        for (Vertex v: vertices) {
+            System.out.print(v + ", ");
+        }
     }
 
     private void makeEdges(int H, int W, int edgeIndex, int i, int j){
         vertices[W*i + j] = new Vertex(i, j);
         if(i == H-1) return;
         if(j != 0){
-            if( vertices[W*(i+1) + j-1] != null ){
-                makeEdges(H, W, edgeIndex,i+1, j-1);
+            if (vertices[W*(i+1) + j-1] == null) {
+                vertices[W * (i + 1) + j - 1] = new Vertex(i + 1, j - 1);
             }
+            makeEdges(H, W, edgeIndex,i+1, j-1);
             edges[edgeIndex] = new Edge(vertices[W*i + j], vertices[W*(i+1) + j-1], Importance.get(i+1).get(j-1));
             edgeIndex++;
         }
-        if( vertices[W*(i+1) + j] != null ){
-            makeEdges(H, W, edgeIndex, i+1, j);
+        if(vertices[W*(i+1) + j]==null) {
+            vertices[W*(i+1) + j] = new Vertex(i+1,j);
         }
+        makeEdges(H, W, edgeIndex, i+1, j);
         edges[edgeIndex] = new Edge(vertices[W*i + j], vertices[W*(i+1) + j], Importance.get(i+1).get(j));
         edgeIndex++;
         if(j != W-1){
-            if( vertices[W*(i+1) + j+1] != null){
-                makeEdges(H, W, edgeIndex, i+1, j+1);
+            if(vertices[W*(i+1) + j+1]==null) {
+                vertices[W*(i+1) + j+1] = new Vertex(i+1,j+1);
             }
+            makeEdges(H, W, edgeIndex, i+1, j+1);
             edges[edgeIndex] = new Edge(vertices[W*i + j], vertices[W*(i+1) + j+1], Importance.get(i+1).get(j+1));
             edgeIndex++;
         }
@@ -136,6 +140,7 @@ public class WGraph {
         for(Vertex start : starts){
             PriorityQ pq = new PriorityQ();
             for(Vertex v : vertices){
+                System.out.println(v);
                 v.dist = Integer.MAX_VALUE;
                 v.parent = null;
                 v.done = false;
