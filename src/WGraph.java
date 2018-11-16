@@ -114,6 +114,78 @@ public class WGraph {
 
     }
 
+    private ArrayList<Integer> dijkstra(ArrayList<Integer> S1, ArrayList<Integer> S2){
+        ArrayList<Vertex> starts = new ArrayList<>();
+        ArrayList<Vertex> ends = new ArrayList<>();
+        for(int i = 0; i < S1.size()-1; i+=2){
+            for(Vertex v : vertices){
+                if(v.x == S1.get(i) && v.y == S1.get(i+1)) {
+                    starts.add(v);
+                    break;
+                }
+            }
+        }
+        for(int i = 0; i < S2.size()-1; i+=2){
+            for(Vertex v : vertices){
+                if(v.x == S2.get(i) && v.y == S2.get(i+1)) {
+                    ends.add(v);
+                    break;
+                }
+            }
+        }
+        ArrayList<Vertex> V = new ArrayList<>(Arrays.asList(vertices));
+        ArrayList<Edge> E = new ArrayList<>(Arrays.asList(edges));
+        Vertex start = new Vertex(-1, -1);
+        Vertex end = new Vertex(-2, -2);
+        V.add(end);
+        for(Vertex s : starts){
+            E.add(new Edge(start, s, 0));
+        }
+        for(Vertex e : ends){
+            E.add(new Edge(e, end, 0));
+        }
+        PriorityQ pq = new PriorityQ();
+        for(Vertex v : V){
+            v.dist = Integer.MAX_VALUE;
+            v.parent = null;
+            v.done = false;
+            pq.add(v, v.dist);
+        }
+        start.dist = 0;
+        pq.add(start, start.dist);
+        V.add(start);
+
+        while(!pq.isEmpty()){
+            Vertex u = pq.extractMin();
+            u.done = true;
+            if(u.equals(end)){
+                ArrayList<Integer> path = new ArrayList<>();
+                Vertex add = u.parent;
+                ArrayList<Edge> edge_path = new ArrayList<>();
+                while(add != null && !add.equals(start)){
+                    path.add(0, add.y);
+                    path.add(0, add.x);
+                    if(!add.equals(start)){
+                        edge_path.add(new Edge(add.parent, add, 0));
+                    }
+                    add = add.parent;
+                }
+                return path;
+            }
+            for(Edge e : E){
+                if(e.u.equals(u) && !e.v.done){
+                    int newdist = u.dist + e.wt;
+                    if(newdist < e.v.dist){
+                        e.v.dist = newdist;
+                        e.v.parent = u;
+                        pq.setPriority(e.v, newdist);
+                    }
+                }
+            }
+        }
+    return null;
+    }
+
 
     public ArrayList<Integer> V2V(int ux, int uy, int vx, int vy){
         ArrayList<Integer> starts = new ArrayList<>();
@@ -122,84 +194,18 @@ public class WGraph {
         starts.add(uy);
         ends.add(vx);
         ends.add(vy);
-        return S2S(starts, ends);
+        return dijkstra(starts, ends);
     }
 
     public ArrayList<Integer> V2S(int ux, int uy, ArrayList<Integer> S){
         ArrayList<Integer> starts = new ArrayList<>();
         starts.add(ux);
         starts.add(uy);
-        return S2S(starts, S);
+        return dijkstra(starts, S);
     }
 
     public ArrayList<Integer> S2S(ArrayList<Integer> S1, ArrayList<Integer> S2){
-        int min_length = Integer.MAX_VALUE;
-        ArrayList<Integer> rval = null;
-        ArrayList<Vertex> starts = new ArrayList<>();
-        ArrayList<Vertex> ends = new ArrayList<>();
-        for(int i = 0; i < S1.size()-1; i+=2){
-            starts.add(new Vertex(S1.get(i), S1.get(i+1)));
-        }
-        for(int i = 0; i < S2.size()-1; i+=2){
-            ends.add(new Vertex(S2.get(i), S2.get(i+1)));
-        }
-        for(Vertex start : starts){
-            PriorityQ pq = new PriorityQ();
-            for(Vertex v : vertices){
-                v.dist = Integer.MAX_VALUE;
-                v.parent = null;
-                v.done = false;
-                if(!v.equals(start)) {pq.add(v, v.dist);}
-                else {
-                    v.dist = 0;
-                    pq.add(v, v.dist);
-                }
-            }
-
-            while(!pq.isEmpty()){
-                Vertex u = pq.extractMin();
-                u.done = true;
-                for(Vertex end : ends){
-                    if(u.equals(end)){  //Found one!!
-                        ArrayList<Integer> path = new ArrayList<>();
-                        Vertex add = u;
-                        ArrayList<Edge> edge_path = new ArrayList<>();
-                        while(add != null){
-                            path.add(0, add.y);
-                            path.add(0, add.x);
-                            if(add != null && add.parent != null) {
-                                edge_path.add(new Edge(add.parent, add, 0));
-                            }
-                            add = add.parent;
-                        }
-                        //Calculate path cost
-                        int path_cost = 0;
-                        for(Edge e : edge_path){
-                            for(Edge e2 : edges){
-                                if(e.u.equals(e2.u) && e.v.equals(e2.v)){
-                                    path_cost += e2.wt();
-                                }
-                            }
-                        }
-                        if((path_cost < min_length) && (path.get(0) == start.x) && (path.get(1) == start.y)){
-                            rval = path;
-                            min_length = path_cost;
-                        }
-                    }
-                }
-                for(Edge e : edges){
-                    if(e.u.equals(u) && !e.v.done){
-                        int newdist = u.dist + e.wt;
-                        if(newdist < e.v.dist){
-                            e.v.dist = newdist;
-                            e.v.parent = u;
-                            pq.setPriority(e.v, newdist);
-                        }
-                    }
-                }
-            }
-        }
-        return rval;
+        return dijkstra(S1, S2);
     }
 
 
