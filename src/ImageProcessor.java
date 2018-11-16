@@ -52,7 +52,7 @@ public class ImageProcessor {
             pw.println(W);
             for(int i=0; i<H; i++) {
                 for(int j=0; j<W; j++) {
-                    pw.print(M[i][j]);
+                    pw.print(M.get(i).get(j));
                 }
                 pw.println();
             }
