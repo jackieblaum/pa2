@@ -169,7 +169,6 @@ public class WGraph {
                             path.add(0, add.x);
                             add = add.parent;
                             if(add != null && add.parent != null) {
-                                System.out.println(add.parent + " " + add);
                                 edge_path.add(new Edge(add.parent, add, 0));
                             }
                         }

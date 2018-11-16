@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -54,7 +55,6 @@ public class ImageProcessor {
             ends.add(j);
         }
         ArrayList<Integer> path = wg.S2S(starts, ends);
-        System.out.println(path);
     }
 
     private int Importance(int i, int j){
