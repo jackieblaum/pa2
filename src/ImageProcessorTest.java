@@ -57,6 +57,26 @@ public class ImageProcessorTest {
         ArrayList<ArrayList<Integer>> ideal = new ArrayList<>(Arrays.asList(row0, row1, row2));
         assertEquals(ideal, real);
     }
+
+    @Test
+    public void time_30_40(){
+        ImageProcessor img = new ImageProcessor("src\\ex_30_40.txt");
+        for(int k = 0; k < 10; k++) {
+            img.reduce_by_one();
+            System.out.println(k + "");
+        }
+        assertEquals(true, true);
+    }
+
+    @Test
+    public void time_300_400(){
+        ImageProcessor img = new ImageProcessor("src\\ex_300_400.txt");
+        for(int k = 0; k < 10; k++) {
+            img.reduce_by_one();
+            System.out.println(k + "");
+        }
+        assertEquals(true, true);
+    }
 //    @Test
 //    public void writeReduced() {
 //    }
