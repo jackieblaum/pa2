@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -40,6 +41,29 @@ public class ImageProcessor {
     }
 
     void writeReduced(int k, String FName) {
+        for (int index=0; index<k; index++) {
+            reduce_by_one();
+        }
+        File file = new File("src\\output.txt");
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter(file);
+            pw.println(H);
+            pw.println(W);
+            for(int i=0; i<H; i++) {
+                for(int j=0; j<W; j++) {
+                    pw.print(M[i][j]);
+                }
+                pw.println();
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if(pw != null) {
+                pw.close();
+            }
+        }
 
     }
 
@@ -92,7 +116,7 @@ public class ImageProcessor {
             B = b;
         }
         public String toString(){
-            return "(" + R + "," + G + "," + B + ")";
+            return R + " " + G + " " + B + " ";
         }
         public boolean equals(Object obj){
             if(!(obj instanceof Pixel)) return false;
