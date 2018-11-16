@@ -74,16 +74,12 @@ public class ImageProcessor {
         ArrayList<Integer> starts = new ArrayList<>();
         ArrayList<Integer> ends = new ArrayList<>();
         for(int j = 0; j < W; j++){
-            starts.add(j);
             starts.add(0);
-            ends.add(j);
+            starts.add(j);
             ends.add(H-1);
+            ends.add(j);
         }
-        System.out.println(starts);
-        System.out.println(ends);
-        System.out.println(M);
         ArrayList<Integer> path = wg.S2S(starts, ends);
-        System.out.println(path);
         for(int k = 0; k < path.size(); k+=2){
             M.get(path.get(k+1)).remove(path.get(k));
         }

@@ -143,8 +143,6 @@ public class WGraph {
         for(int i = 0; i < S2.size()-1; i+=2){
             ends.add(new Vertex(S2.get(i), S2.get(i+1)));
         }
-        System.out.println(starts);
-        System.out.println(ends);
         for(Vertex start : starts){
             PriorityQ pq = new PriorityQ();
             for(Vertex v : vertices){
@@ -183,7 +181,7 @@ public class WGraph {
                                 }
                             }
                         }
-                        if(path_cost < min_length){
+                        if((path_cost < min_length) && (path.get(0) == start.x) && (path.get(1) == start.y)){
                             rval = path;
                             min_length = path_cost;
                         }

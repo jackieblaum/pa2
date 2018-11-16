@@ -10,7 +10,7 @@ public class WGraphTest {
 
     @Test
     public void v2Vexample() {
-        WGraph graph = new WGraph("C:\\Users\\Jackie\\Documents\\CS311\\pa2\\src\\example.txt");
+        WGraph graph = new WGraph("src\\example.txt");
         ArrayList<Integer> result = new ArrayList<>();
         Collections.addAll(result, 1,2,3,4,5,6);
         System.out.println(graph.V2V(1,2,5,6).toString());
@@ -19,7 +19,7 @@ public class WGraphTest {
 
     @Test
     public void v2Vex1() {
-        WGraph graph = new WGraph("C:\\Users\\Jackie\\Documents\\CS311\\pa2\\src\\ex1.txt");
+        WGraph graph = new WGraph("src\\ex1.txt");
         ArrayList<Integer> result = new ArrayList<>();
         Collections.addAll(result, 1,2,2,1,3,3,4,3,5,2);
         System.out.println(graph.V2V(1,2,5,2).toString());
@@ -28,7 +28,7 @@ public class WGraphTest {
 
     @Test
     public void v2Vex2() {
-        WGraph graph = new WGraph("C:\\Users\\Jackie\\Documents\\CS311\\pa2\\src\\ex2.txt");
+        WGraph graph = new WGraph("src\\ex2.txt");
         ArrayList<Integer> result = new ArrayList<>();
         Collections.addAll(result, 5,1,4,2,3,1,2,2,2,3,3,4,3,5);
         System.out.println(graph.V2V(5,1,3,5).toString());
@@ -37,7 +37,7 @@ public class WGraphTest {
 
     @Test
     public void v2Sexample() {
-        WGraph graph = new WGraph("C:\\Users\\Jackie\\Documents\\CS311\\pa2\\src\\example.txt");
+        WGraph graph = new WGraph("src\\example.txt");
         ArrayList<Integer> result = new ArrayList<>();
         Collections.addAll(result, 1,2,7,8);
         ArrayList<Integer> s = new ArrayList<>();
@@ -48,7 +48,7 @@ public class WGraphTest {
 
     @Test
     public void v2Sexample2() {
-        WGraph graph = new WGraph("C:\\Users\\Jackie\\Documents\\CS311\\pa2\\src\\example.txt");
+        WGraph graph = new WGraph("src\\example.txt");
         ArrayList<Integer> result = new ArrayList<>();
         Collections.addAll(result, 5,6,1,2,7,8);
         ArrayList<Integer> s = new ArrayList<>();
@@ -59,7 +59,7 @@ public class WGraphTest {
 
     @Test
     public void s2Sex1() {
-        WGraph graph = new WGraph("C:\\Users\\Jackie\\Documents\\CS311\\pa2\\src\\ex1.txt");
+        WGraph graph = new WGraph("src\\ex1.txt");
         ArrayList<Integer> result = new ArrayList<>();
         Collections.addAll(result, 2,1,3,3,4,3,5,2);
         ArrayList<Integer> s1 = new ArrayList<>();
