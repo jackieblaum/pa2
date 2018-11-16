@@ -143,6 +143,8 @@ public class WGraph {
         for(int i = 0; i < S2.size()-1; i+=2){
             ends.add(new Vertex(S2.get(i), S2.get(i+1)));
         }
+        System.out.println(starts);
+        System.out.println(ends);
         for(Vertex start : starts){
             PriorityQ pq = new PriorityQ();
             for(Vertex v : vertices){

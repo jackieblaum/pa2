@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class ImageProcessor {
     private int H,W;
-    private Pixel M[][];
+    private ArrayList<ArrayList<Pixel>> M;
 
     public ImageProcessor(String FName) {
         File f = new File(FName);
@@ -15,10 +15,11 @@ public class ImageProcessor {
             H = s.nextInt();
             W = s.nextInt();
 
-            M = new Pixel[H][W];
+            M = new ArrayList<>();
             for (int i=0; i<H; i++) {
+                M.add(new ArrayList<>());
                 for (int j=0; j<W; j++) {
-                    M[i][j] = new Pixel(s.nextInt(),s.nextInt(),s.nextInt());
+                    M.get(i).add(new Pixel(s.nextInt(),s.nextInt(),s.nextInt()));
                 }
             }
         } catch (FileNotFoundException e) {
@@ -49,12 +50,19 @@ public class ImageProcessor {
         ArrayList<Integer> starts = new ArrayList<>();
         ArrayList<Integer> ends = new ArrayList<>();
         for(int j = 0; j < W; j++){
-            starts.add(0);
             starts.add(j);
-            ends.add(H-1);
+            starts.add(0);
             ends.add(j);
+            ends.add(H-1);
         }
+        System.out.println(starts);
+        System.out.println(ends);
+        System.out.println(M);
         ArrayList<Integer> path = wg.S2S(starts, ends);
+        System.out.println(path);
+        for(int k = 0; k < path.size(); k+=2){
+            M.get(path.get(k+1)).remove(path.get(k));
+        }
     }
 
     private int Importance(int i, int j){
@@ -64,8 +72,8 @@ public class ImageProcessor {
         iup = i == H-1 ? 0 : i+1;
         jlow = j == 0 ? W-1 : j-1;
         jup = j == W-1 ? 0 : j+1;
-        yimp = PDist(M[ilow][j], M[iup][j]);
-        ximp = PDist(M[i][jlow], M[i][jup]);
+        yimp = PDist(M.get(ilow).get(j), M.get(iup).get(j));
+        ximp = PDist(M.get(i).get(jlow), M.get(i).get(jup));
         return ximp + yimp;
     }
 

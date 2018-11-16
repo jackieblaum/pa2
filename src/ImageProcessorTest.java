@@ -43,6 +43,7 @@ public class ImageProcessorTest {
         assertEquals(ideal, real);
     }
 
+    @Test
     public void reduce_by_three(){
         ImageProcessor img = new ImageProcessor("src\\imgprocessor_ex.txt");
         img.reduce_by_one();
