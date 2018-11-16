@@ -72,46 +72,33 @@ public class WGraph {
         vertices = new Vertex[numVertices];
         edges = new Edge[numEdges];
 
-        int edge_index = 0;
-        for(int j = 0; j < W; j++){
-            edge_index = makeEdges(H, W, edge_index, 0, j);
-        }
-    }
-
-    private int makeEdges(int H, int W, int edgeIndex, int i, int j){
-        vertices[W*i + j] = new Vertex(i, j);
-        if(i == H-1) return edgeIndex;
-        int weight;
-        if(j != 0){
-            if (vertices[W*(i+1) + j-1] == null) {
-                vertices[W * (i + 1) + j - 1] = new Vertex(i + 1, j - 1);
-                edgeIndex = makeEdges(H, W, edgeIndex,i+1, j-1);
+        int edgeIndex = 0;
+        for(int i = 0; i < H; i++){
+            for(int j = 0; j < W; j++){
+                if(vertices[W*i + j] == null) vertices[W*i + j] = new Vertex(i, j);
+                if(i == H-1) break;
+                int weight;
+                if(j != 0){
+                    if(vertices[W*(i+1) + j -1] == null) vertices[W*(i+1)+j-1] = new Vertex(i+1,j-1);
+                    weight = Importance.get(i+1).get(j-1);
+                    if(i == 0) weight += Importance.get(i).get(j);
+                    edges[edgeIndex] = new Edge(vertices[W*i + j], vertices[W*(i+1)+j-1], weight);
+                    edgeIndex++;
+                }
+                if(vertices[W*(i+1)+j]==null) vertices[W*(i+1)+j] = new Vertex(i+1,j);
+                weight = Importance.get(i+1).get(j);
+                if(i == 0) weight += Importance.get(i).get(j);
+                edges[edgeIndex] = new Edge(vertices[W*i + j], vertices[W*(i+1) + j], weight);
+                edgeIndex++;
+                if(j != W-1){
+                    if(vertices[W*(i+1) + j+1]==null) vertices[W*(i+1) + j+1] = new Vertex(i+1,j+1);
+                    weight = Importance.get(i+1).get(j+1);
+                    if(i == 0) weight += Importance.get(i).get(j);
+                    edges[edgeIndex] = new Edge(vertices[W*i + j], vertices[W*(i+1) + j+1], weight);
+                    edgeIndex++;
+                }
             }
-            weight = Importance.get(i+1).get(j-1);
-            if(i == 0) weight += Importance.get(i).get(j);
-            edges[edgeIndex] = new Edge(vertices[W*i + j], vertices[W*(i+1) + j-1], weight);
-            edgeIndex++;
         }
-        if(vertices[W*(i+1) + j]==null) {
-            vertices[W*(i+1) + j] = new Vertex(i+1,j);
-            edgeIndex = makeEdges(H, W, edgeIndex, i+1, j);
-        }
-        weight = Importance.get(i+1).get(j);
-        if(i == 0) weight += Importance.get(i).get(j);
-        edges[edgeIndex] = new Edge(vertices[W*i + j], vertices[W*(i+1) + j], weight);
-        edgeIndex++;
-        if(j != W-1){
-            if(vertices[W*(i+1) + j+1]==null) {
-                vertices[W*(i+1) + j+1] = new Vertex(i+1,j+1);
-                edgeIndex = makeEdges(H, W, edgeIndex, i+1, j+1);
-            }
-            weight = Importance.get(i+1).get(j+1);
-            if(i == 0) weight += Importance.get(i).get(j);
-            edges[edgeIndex] = new Edge(vertices[W*i + j], vertices[W*(i+1) + j+1], weight);
-            edgeIndex++;
-        }
-        return edgeIndex;
-
     }
 
     private ArrayList<Integer> dijkstra(ArrayList<Integer> S1, ArrayList<Integer> S2){
