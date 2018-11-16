@@ -41,10 +41,14 @@ public class ImageProcessor {
     }
 
     void writeReduced(int k, String FName) {
+        long time = System.currentTimeMillis();
         for (int index=0; index<k; index++) {
             reduce_by_one();
         }
-        File file = new File("src\\output.txt");
+        long end = System.currentTimeMillis();
+        System.out.print("WriteReduced: ");
+        System.out.println(end-time);
+        File file = new File(FName);
         PrintWriter pw = null;
         try {
             pw = new PrintWriter(file);
@@ -56,7 +60,6 @@ public class ImageProcessor {
                 }
                 pw.println();
             }
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {
@@ -69,6 +72,7 @@ public class ImageProcessor {
 
     // change back to private when done testing
     public void reduce_by_one(){
+        Long time = System.currentTimeMillis();
         ArrayList<ArrayList<Integer>> imp = getImportance();
         WGraph wg = new WGraph(imp);
         ArrayList<Integer> starts = new ArrayList<>();
@@ -84,6 +88,7 @@ public class ImageProcessor {
             M.get(path.get(k)).remove((int)path.get(k+1));
         }
         W--;
+        System.out.println(System.currentTimeMillis()-time);
     }
 
     private int Importance(int i, int j){
