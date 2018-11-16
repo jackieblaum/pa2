@@ -167,10 +167,10 @@ public class WGraph {
                         while(add != null){
                             path.add(0, add.y);
                             path.add(0, add.x);
-                            add = add.parent;
                             if(add != null && add.parent != null) {
                                 edge_path.add(new Edge(add.parent, add, 0));
                             }
+                            add = add.parent;
                         }
                         //Calculate path cost
                         int path_cost = 0;

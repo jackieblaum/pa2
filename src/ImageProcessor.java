@@ -81,7 +81,9 @@ public class ImageProcessor {
         }
         ArrayList<Integer> path = wg.S2S(starts, ends);
         for(int k = 0; k < path.size(); k+=2){
-            M.get(path.get(k+1)).remove(path.get(k));
+            System.out.println("Removing: " + path.get(k) + "," + path.get(k+1));
+            System.out.println("Value to remove: " + M.get(path.get(k)).get(path.get(k+1)));
+            M.get(path.get(k)).remove(path.get(k+1));
         }
     }
 
